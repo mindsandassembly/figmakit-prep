@@ -89,7 +89,7 @@ export const DEFAULT_EXCEPTIONS: ExceptionPolicy = {
 };
 
 /** The organization config bundled with the plugin (src/standards/figmakit.config.json). */
-export const BUNDLED_CONFIG: LintConfig = bundledConfig as LintConfig;
+export const BUNDLED_CONFIG: LintConfig = bundledConfig as unknown as LintConfig; // JSON widens tuples; resolveConfig validates it at runtime
 
 /** Map a config severity to an effective severity. 'off' disables; null = invalid. */
 export function normalizeSeverity(s: SeveritySetting): Severity | 'off' | null {

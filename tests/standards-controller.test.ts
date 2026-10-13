@@ -1,3 +1,4 @@
+import exampleDraftRegistry from '../src/standards/registry.example.json';
 import BUNDLED_CONFIG_LOCKED from '../src/standards/figmakit.config.json';
 /**
  * Standards controller (Figma main-thread glue) — tested against a fake `figma` object.
@@ -204,12 +205,13 @@ describe('isStandardsMessage', () => {
 });
 
 describe('standards-init / state', () => {
-  it('reports bundled draft registry, rules and current user', async () => {
+  it('reports the bundled approved registry, rules and current user', async () => {
     const fake = makeFigma([page('0:1', 'Page 1', [cleanHome()])]);
     const { send } = harness(fake);
     const state = last(await send({ type: 'standards-init' }), 'standards-state');
     expect(state.designSystem).toBe('Divi 5');
-    expect(state.registryStatus).toBe('draft');
+    expect(state.registryStatus).toBe('approved');
+    expect(state.registryVersion).toBe('1.0.0');
     expect(state.registrySource).toBe('bundled');
     expect(state.configSource).toBe('bundled');
     expect(state.rulesetVersion).toBe('1.0.0');
@@ -230,8 +232,9 @@ describe('standards-init / state', () => {
 });
 
 describe('standards-run', () => {
-  it('bundled draft registry: result + readiness posted, NOT_READY', async () => {
+  it('draft registry (example file saved to the document): result + readiness posted, NOT_READY', async () => {
     const fake = makeFigma([page('0:1', 'Page 1', [cleanHome()])]);
+    fake.store.set(STANDARDS_SHARED_NAMESPACE + '/registry', JSON.stringify(exampleDraftRegistry));
     const { send } = harness(fake);
     const out = await send({ type: 'standards-run' });
     expect(out.filter((m) => m.type === 'standards-progress').map((m) => m.stage)).toEqual(['loading', 'snapshot', 'lint', 'done']);
@@ -239,7 +242,7 @@ describe('standards-run', () => {
     expect(res.result.nodeCount).toBeGreaterThan(0);
     expect(res.readiness.ready).toBe(false);
     expect(res.readiness.status).toBe('NOT_READY');
-    expect(res.registry).toEqual({ version: '0.1.0', designSystem: 'Divi 5', status: 'draft', source: 'bundled' });
+    expect(res.registry).toEqual({ version: '0.1.0', designSystem: 'Divi 5', status: 'draft', source: 'document' });
     expect(res.scope).toEqual({ type: 'page', pageId: '0:1', pageName: 'Page 1', rootNodeIds: ['1:1'], rootNodeNames: ['Home'] });
     expect(res.validatedAt).toBe(NOW);
     expect(res.rulesetVersion).toBe('1.0.0');
@@ -843,8 +846,9 @@ describe('registry tools', () => {
     expect(msg.ok).toBe(false);
   });
 
-  it('verify-registry skips placeholder keys of the bundled draft', async () => {
+  it('verify-registry skips placeholder keys of a draft registry', async () => {
     const fake = makeFigma([page('0:1', 'Page 1', [])]);
+    fake.store.set(STANDARDS_SHARED_NAMESPACE + '/registry', JSON.stringify(exampleDraftRegistry));
     const { send } = harness(fake);
     const msg = last(await send({ type: 'standards-verify-registry' }), 'standards-verify-registry');
     expect(fake.figma.importComponentByKeyAsync).not.toHaveBeenCalled();

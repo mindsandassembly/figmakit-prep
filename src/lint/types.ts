@@ -243,6 +243,11 @@ export interface RegistryComponent {
   };
   deprecated?: { replacedBy?: string; message?: string };
   description?: string;
+  /**
+   * Where designers find this component in Figma, used in messages instead of a generic "library".
+   * e.g. { componentName: "button 1", location: "Assets panel → Local components" }.
+   */
+  figma?: { componentName?: string; location?: string };
 }
 
 export interface TokenSet {

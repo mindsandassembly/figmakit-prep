@@ -25,7 +25,7 @@ const KNOWN_TOP_KEYS = ['$schema', 'version', 'designSystem', 'status', 'descrip
 const KNOWN_COMPONENT_KEYS = [
   'id', 'name', 'diviType', 'figmaComponentKeys', 'allowedChildren', 'allowedParents', 'governsChildren',
   'requiredProperties', 'optionalStates', 'requiresAutoLayout', 'namingPattern', 'allowMetadataMapping',
-  'match', 'deprecated', 'description',
+  'match', 'deprecated', 'description', 'figma',
 ];
 const KNOWN_TOKEN_KEYS = ['colors', 'spacing', 'typography', 'fontFamilies'];
 
@@ -187,6 +187,13 @@ export function validateRegistry(input: unknown): Diagnostic[] {
     }
     if (c.description !== undefined && typeof c.description !== 'string') {
       add('error', 'invalid-field', `Component "${label}" "description" must be a string.`, `${p}.description`);
+    }
+    if (c.figma !== undefined) {
+      const fg = c.figma as Record<string, unknown>;
+      const ok = isObj(fg) &&
+        (fg.componentName === undefined || typeof fg.componentName === 'string') &&
+        (fg.location === undefined || typeof fg.location === 'string');
+      if (!ok) add('error', 'invalid-field', `Component "${label}" "figma" must be { componentName?: string; location?: string }.`, `${p}.figma`);
     }
 
     // requiresAutoLayout

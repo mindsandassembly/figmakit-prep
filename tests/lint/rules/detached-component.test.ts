@@ -19,7 +19,7 @@ describe('divi/detached-component — confirmed detaches', () => {
     expect(i.certainty).toBe('confirmed');
     expect(i.severity).toBe('error');
     expect(i.message).toBe('Detached from approved component Divi Button.');
-    expect(i.suggestion).toBe('Replace with an instance of Divi Button (re-insert from the library).');
+    expect(i.suggestion).toBe('Delete this copy and drag in an instance of Divi Button.');
     expect(i.fix!.kind).toBe('UNSUPPORTED');
     expect(i.fix!.operations).toEqual([]);
     expect(i.fixable).toBe(false);

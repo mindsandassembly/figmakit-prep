@@ -4,7 +4,7 @@ import { INTERNAL_ERROR_RULE_ID } from '../../src/lint/types';
 import { isBlocking, evaluateReadiness } from '../../src/lint/readiness';
 import { DEFAULT_READINESS, resolveConfig } from '../../src/lint/config';
 import { createException } from '../../src/lint/exceptions';
-import bundledRegistry from '../../src/standards/registry.json';
+import bundledRegistry from '../../src/standards/registry.example.json';
 import { node, finalize, lint, byName, testRegistry, TEST_NOW } from './helpers';
 
 function rule(id: string, validate: (name: string) => RuleReport[], severity: 'error' | 'warning' = 'error'): LintRule {

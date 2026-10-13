@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { rule } from '../../../src/lint/rules/approved-component';
 import { node, instanceOf, lint, testRegistry, makeContext, byName } from '../helpers';
 import type { DesignNode, LintConfig } from '../../../src/lint/types';
-import bundled from '../../../src/standards/registry.json';
+import bundled from '../../../src/standards/registry.example.json';
 
 const RULES = [rule];
 

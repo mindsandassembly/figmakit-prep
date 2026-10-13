@@ -6,7 +6,7 @@ import {
   emptyRegistry,
   isPlaceholderKey,
 } from '../../src/lint/registry';
-import bundled from '../../src/standards/registry.json';
+import bundled from '../../src/standards/registry.example.json';
 import { testRegistry } from './helpers';
 
 const codes = (input: unknown) => validateRegistry(input).map((d) => `${d.level}:${d.code}`);
@@ -140,7 +140,7 @@ describe('loadRegistry', () => {
     loadRegistry(input);
     expect('status' in input).toBe(false);
   });
-  it('bundled src/standards/registry.json loads with zero errors and unresolved-key warnings', () => {
+  it('bundled src/standards/registry.example.json loads with zero errors and unresolved-key warnings', () => {
     const { index, diagnostics } = loadRegistry(bundled);
     expect(diagnostics.filter((d) => d.level === 'error')).toEqual([]);
     expect(index).not.toBeNull();

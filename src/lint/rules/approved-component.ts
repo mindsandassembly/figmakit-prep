@@ -7,6 +7,7 @@
 import type { DesignNode, LintContext, LintRule, RegistryComponent, RuleReport } from '../types';
 import { checksNestedInstance, nestedCertainty } from './nested';
 
+import { componentRef } from './where';
 export const RULE_ID = 'divi/approved-component';
 
 type Scope = 'governed' | 'everywhere';
@@ -171,7 +172,7 @@ export const rule: LintRule = {
           certainty: 'confirmed',
           message: `${comp.name} is deprecated.${extra}`,
           suggestion: replacement
-            ? `Use approved ${replacement.name} component.`
+            ? `Use approved ${componentRef(replacement)} component.`
             : 'Replace with a supported component from the registry.',
           actual: comp.name,
           expected: replacement ? replacement.name : undefined,
@@ -218,7 +219,7 @@ export const rule: LintRule = {
         certainty: nestedCertainty(node, context, 'confirmed'),
         message: `"${displayName}" is not an approved component.`,
         suggestion: replacement
-          ? `Use approved ${replacement.name} component.`
+          ? `Use approved ${componentRef(replacement)} component.`
           : 'Use an approved component from the registry, or add this component to the registry.',
         actual: displayName,
         data: {

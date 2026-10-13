@@ -5,5 +5,16 @@
   ],
   "rulesetVersion": "1.0.0",
   "registryVersion": ">=0.1.0 <2.0.0",
-  "rules": {}
+  "rules": {
+    "divi/detached-component": [
+      "error",
+      {
+        "certaintySeverity": {
+          "confirmed": "inherit",
+          "likely": "error",
+          "requires-review": "info"
+        }
+      }
+    ]
+  }
 }

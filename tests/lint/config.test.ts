@@ -1,3 +1,4 @@
+import { ALL_RULES as ALL_RULES_FOR_BUNDLE } from '../../src/lint/rules/index';
 import { describe, it, expect } from 'vitest';
 import type { LintRule } from '../../src/lint/types';
 import {
@@ -76,8 +77,11 @@ describe('presets & defaults', () => {
     ]);
     expect(rules['divi/auto-layout']).toBe('error');
   });
-  it('BUNDLED_CONFIG comes from figmakit.config.json', () => {
-    expect(BUNDLED_CONFIG).toEqual({ adminTools: false, extends: ['figmakit:recommended'], rulesetVersion: '1.0.0', registryVersion: '>=0.1.0 <2.0.0', rules: {} });
+  it('BUNDLED_CONFIG comes from figmakit.config.json (locked build, recreated components are errors)', () => {
+    expect(BUNDLED_CONFIG).toMatchObject({ adminTools: false, extends: ['figmakit:recommended'], rulesetVersion: '1.0.0', registryVersion: '>=0.1.0 <2.0.0' });
+    const { config, diagnostics } = resolveConfig(BUNDLED_CONFIG, ALL_RULES_FOR_BUNDLE);
+    expect(diagnostics.filter((d) => d.level === 'error')).toEqual([]);
+    expect(config.rules['divi/detached-component'].options.certaintySeverity).toEqual({ confirmed: 'inherit', likely: 'error', 'requires-review': 'info' });
   });
 });
 

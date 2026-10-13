@@ -1,0 +1,73 @@
+{
+  "version": "1.0.0",
+  "designSystem": "Divi 5",
+  "status": "approved",
+  "description": "Approved components for FigmaKit Standards. Generated from Figma file 6YnBdQ5F2jzSxqaUKy68fj (\"Untitled\") on 2026-10-13. Only components listed here are approved; add more by registering their Figma component keys.",
+  "components": [
+    {
+      "id": "divi-button",
+      "name": "Divi Button",
+      "diviType": "et_pb_button",
+      "figmaComponentKeys": [
+        "b9e28fa0282e37dfa73ab93cd82a9ca4ad10f519"
+      ],
+      "match": {
+        "namePatterns": [
+          "^(divi[-_ ]?)?(button|btn)([-_ ]?\\d+)?$"
+        ],
+        "roles": [
+          "button"
+        ]
+      },
+      "description": "Figma component \"button 1\" (node 1:5).",
+      "figma": {
+        "componentName": "button 1",
+        "location": "Assets panel → Local components"
+      }
+    }
+  ],
+  "tokens": {
+    "spacing": [
+      {
+        "name": "4xs",
+        "value": 4
+      },
+      {
+        "name": "3xs",
+        "value": 8
+      },
+      {
+        "name": "2xs",
+        "value": 12
+      },
+      {
+        "name": "xs",
+        "value": 16
+      },
+      {
+        "name": "sm",
+        "value": 20
+      },
+      {
+        "name": "md",
+        "value": 24
+      },
+      {
+        "name": "lg",
+        "value": 32
+      },
+      {
+        "name": "xl",
+        "value": 48
+      },
+      {
+        "name": "2xl",
+        "value": 80
+      },
+      {
+        "name": "3xl",
+        "value": 96
+      }
+    ]
+  }
+}

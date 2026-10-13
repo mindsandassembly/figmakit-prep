@@ -17,6 +17,7 @@ import type {
   Severity,
 } from '../types';
 
+import { componentRef } from './where';
 export const RULE_ID = 'divi/detached-component';
 
 /** Independent pieces of evidence that a layer recreates a registry component. */
@@ -253,12 +254,12 @@ export const rule: LintRule = {
             code: 'detached-approved',
             certainty: 'confirmed',
             message: `Detached from approved component ${name}.`,
-            suggestion: `Replace with an instance of ${name} (re-insert from the library).`,
+            suggestion: `Delete this copy and drag in an instance of ${componentRef(match.component)}.`,
             expected: `Instance of ${name}`,
             actual: 'Detached copy',
             fix: {
               kind: 'UNSUPPORTED',
-              description: `Re-insert ${name} from the library and move the content over.`,
+              description: `Insert ${componentRef(match.component)} and move any content over.`,
               operations: [],
             },
             data: { componentId: match.component.id, matchedKey: match.matchedKey, detachedType: node.detachedInfo.type },
@@ -287,11 +288,11 @@ export const rule: LintRule = {
         code: 'recreated-component',
         certainty: best.certainty,
         message: `Looks like a manually recreated ${name} (heuristic; evidence: ${best.signals.join(', ')}).`,
-        suggestion: `Replace with an instance of ${name}, or record an exception if it is intentionally custom.`,
+        suggestion: `Replace with an instance of ${componentRef(best.component)}. If it really must be custom, ask your design-system admin for an exception.`,
         expected: `Instance of ${name}`,
         fix: {
           kind: 'UNSUPPORTED',
-          description: `Replace with an instance of ${name} from the library.`,
+          description: `Replace with an instance of ${componentRef(best.component)}.`,
           operations: [],
         },
         data: {

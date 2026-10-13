@@ -21,7 +21,7 @@ import { runLint } from '../../src/lint/engine';
 import { evaluateReadiness } from '../../src/lint/readiness';
 import { ALL_RULES } from '../../src/lint/rules/index';
 import type { LintConfig, ComponentRegistry } from '../../src/lint/types';
-import bundledRegistry from '../../src/standards/registry.json';
+import bundledRegistry from '../../src/standards/registry.example.json';
 import { testRegistry, TEST_NOW } from './helpers';
 
 // ---------------------------------------------------------------------------
