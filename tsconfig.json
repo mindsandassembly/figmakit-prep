@@ -11,8 +11,9 @@
     "rootDir": "src",
     "declaration": false,
     "sourceMap": false,
+    "resolveJsonModule": true,
     "typeRoots": [
-      "./node_modules/@figma/plugin-typings",
+      "./node_modules/@figma",
       "./node_modules/@types"
     ]
   },

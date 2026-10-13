@@ -1,4 +1,5 @@
 import { analyzeNode, analyzeSelection } from './core/analyzer';
+import { canRemove, canFlatten, isRedundantNesting } from './core/safety-check';
 import { scanForCleaning, applyClean } from './features/cleaner';
 import { scanForRenaming, applyRenames } from './features/renamer';
 import { generateReport } from './features/validator';
@@ -14,6 +15,7 @@ import { extractTextContent } from './features/text-content';
 import { mapVariantsToCSSModifiers } from './features/variant-mapper';
 import { suggestAltText } from './features/alt-text';
 import type { CleanActionItem, RenameAction } from './shared/types';
+import { isStandardsMessage, handleStandardsMessage } from './standards-controller';
 
 /**
  * Get the nodes to analyze: selection if available, otherwise all page children.
@@ -53,6 +55,8 @@ export async function handleMessage(msg: any): Promise<void> {
       await handleScan(msg);
     } else if (type === 'apply') {
       await handleApply(msg);
+    } else if (isStandardsMessage(msg)) {
+      await handleStandardsMessage(msg);
     } else {
       figma.ui.postMessage({ type: 'error', message: 'Unknown message type: ' + type });
     }
@@ -318,6 +322,10 @@ async function handleApply(msg: any): Promise<void> {
         var node = await figma.getNodeByIdAsync(action.nodeId);
         if (!node) continue;
         try {
+          // Re-check safety on the live node: never trust the UI's list (the document may have
+          // changed since the scan, e.g. a wrapper was turned into a component).
+          if (action.action === 'remove' && !canRemove(node).safe) continue;
+          if (action.action === 'flatten' && !canFlatten(node).safe && !isRedundantNesting(node).safe) continue;
           if (action.action === 'remove') {
             node.remove();
             removed++;
@@ -325,10 +333,10 @@ async function handleApply(msg: any): Promise<void> {
             var parent = node.parent;
             if (parent && 'children' in node && (node as any).children.length === 1) {
               var child = (node as any).children[0];
-              var idx = parent.children.indexOf(node);
+              var idx = (parent as any).children.indexOf(node);
               child.x = (child.x || 0) + ((node as any).x || 0);
               child.y = (child.y || 0) + ((node as any).y || 0);
-              parent.insertChild(idx, child);
+              (parent as any).insertChild(idx, child);
               node.remove();
               flattened++;
             }

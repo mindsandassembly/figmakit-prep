@@ -218,3 +218,42 @@ npm run test:watch    # Watch mode
 - **Build**: esbuild with es2015 target for Figma sandbox compatibility. UI is not minified to prevent variable name collisions
 - **Async**: Uses `figma.getNodeByIdAsync()` for dynamic-page document access
 - **No external dependencies**: Figma plugin sandbox doesn't allow npm imports at runtime
+
+## Standards (lint)
+
+The **Standards** tab (8th tab) checks a selection, or the current page when nothing is selected, against
+an approved component registry and token set (Divi 5 by default). It reports issues with an evidence
+level (`confirmed` / `likely` / `requires-review`), offers whitelisted autofixes with preview and
+confirmation, and gives a binary verdict: **READY**, **READY WITH EXCEPTIONS** or **NOT READY**. Results
+can be exported as a JSON handoff report.
+
+- Rules: `divi/approved-component`, `divi/valid-nesting`, `divi/detached-component`,
+  `divi/semantic-mapping`, `divi/approved-tokens`, `divi/auto-layout`, `divi/component-naming`,
+  `divi/required-states`. Presets are `figmakit:recommended` and `figmakit:strict`.
+- Standards live in `src/standards/registry.json` and `src/standards/figmakit.config.json` (bundled).
+  They can be overridden per file in Standards → Settings (stored in the document's shared plugin data,
+  namespace `figmakit_standards`).
+- **The bundled registry is an illustrative draft with placeholder component keys.** Readiness is
+  always NOT READY until you populate it with your library's real keys and set `"status": "approved"`.
+  See [docs/FIGMA_INSTALLATION.md](docs/FIGMA_INSTALLATION.md).
+- "Mark Ready" writes a local record to the file. It is not a trusted approval: a plugin cannot prevent
+  later edits, and the report hash is a checksum, not a signature. See
+  [docs/HANDOFF_VALIDATION.md](docs/HANDOFF_VALIDATION.md).
+
+Documentation:
+
+| Document | Contents |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Snapshot → pure engine design, module map, registry and config formats, presets, persistence keys, adding a rule |
+| [docs/RULES.md](docs/RULES.md) | Every rule: evidence, certainty, options, autofix, examples, limitations |
+| [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) | Build/watch/test, Figma reload loop, debugging, testing autofixes safely |
+| [docs/FIGMA_INSTALLATION.md](docs/FIGMA_INSTALLATION.md) | Import into Figma Desktop, populate and verify the registry, sample test document, org distribution |
+| [docs/HANDOFF_VALIDATION.md](docs/HANDOFF_VALIDATION.md) | Readiness algorithm, exceptions, report schema, limits of local validation, future server-side attestation |
+
+### Designer build vs admin build
+
+The plugin ships **locked** (`"adminTools": false` in `src/standards/figmakit.config.json`): designers see only the
+Standards check, which runs as soon as the plugin opens. They get no settings, document-level overrides are ignored,
+and exceptions can only be granted by approvers listed in the config. To get the full toolset (Clean, Rename,
+Validate, Label, Variants, Assets, Tokens, and the standards settings/registry tools), set `"adminTools": true` and
+run `npm run build`.

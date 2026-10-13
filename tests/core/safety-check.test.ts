@@ -351,3 +351,37 @@ describe('isBackgroundShape', () => {
     expect(isBackgroundShape(node, parent)).toBe(false);
   });
 });
+
+import { mockComponentNode, mockInstanceNode, mockFrameNode as mkFrame, mockRectangleNode as mkRect } from '../helpers/figma-mock';
+import { canRemove as cr, canFlatten as cf, isRedundantNesting as rn } from '../../src/core/safety-check';
+
+describe('component boundaries are never cleaned', () => {
+  it('never flattens a single-child COMPONENT (would delete the main component)', () => {
+    const comp = mockComponentNode({ name: 'button 1', children: [mkRect()] });
+    expect(cf(comp)).toEqual({ safe: false, reason: 'component-boundary' });
+    expect(rn(comp).safe).toBe(false);
+  });
+
+  it('never flattens an INSTANCE', () => {
+    const inst = mockInstanceNode({ children: [mkFrame({ children: [mkRect()] })] });
+    expect(cf(inst).safe).toBe(false);
+    expect(rn(inst).safe).toBe(false);
+  });
+
+  it('never removes a hidden or empty main component', () => {
+    expect(cr(mockComponentNode({ visible: false })).safe).toBe(false);
+    expect(cr(mockComponentNode({})).safe).toBe(false);
+  });
+
+  it('never removes or flattens layers inside an instance', () => {
+    const hidden = mockFrameNode({ visible: false });
+    const wrapper = mockFrameNode({ children: [mkRect()] });
+    mockInstanceNode({ children: [hidden, wrapper] });
+    expect(cr(hidden)).toEqual({ safe: false, reason: 'inside-instance' });
+    expect(cf(wrapper)).toEqual({ safe: false, reason: 'inside-instance' });
+  });
+
+  it('still removes a hidden instance (removing an instance does not affect other layers)', () => {
+    expect(cr(mockInstanceNode({ visible: false })).safe).toBe(true);
+  });
+});

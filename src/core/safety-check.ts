@@ -39,7 +39,42 @@ function getChildCount(node: any): number {
   return safeGetChildren(node).length;
 }
 
+var COMPONENT_DEFINITION_TYPES = ['COMPONENT', 'COMPONENT_SET'];
+var COMPONENT_BOUNDARY_TYPES = ['COMPONENT', 'COMPONENT_SET', 'INSTANCE'];
+
+/**
+ * True when the node is a layer inside a component instance. Figma does not allow removing or
+ * reparenting instance sublayers, and they belong to the component definition anyway.
+ */
+function isInsideInstance(node: any): boolean {
+  var p: any = null;
+  try { p = node ? node.parent : null; } catch (e) { p = null; }
+  var guard = 0;
+  while (p && guard++ < 1000) {
+    if (safeGetString(p, 'type', '') === 'INSTANCE') return true;
+    try { p = p.parent; } catch (e) { p = null; }
+  }
+  return false;
+}
+
+/**
+ * Component guard shared by every destructive check: never remove a main component or component set
+ * (that orphans its instances), never flatten/unwrap any component boundary, and never touch
+ * layers that live inside an instance.
+ */
+function componentGuard(node: any, forFlatten: boolean): SafetyAssessment | null {
+  var type = safeGetString(node, 'type', '');
+  if ((forFlatten ? COMPONENT_BOUNDARY_TYPES : COMPONENT_DEFINITION_TYPES).indexOf(type) >= 0) {
+    return { safe: false, reason: 'component-boundary' };
+  }
+  if (isInsideInstance(node)) return { safe: false, reason: 'inside-instance' };
+  return null;
+}
+
 export function canRemove(node: any): SafetyAssessment {
+  var guarded = componentGuard(node, false);
+  if (guarded) return guarded;
+
   if (safeGetBoolean(node, 'visible', true) === false) {
     return { safe: true, reason: 'hidden' };
   }
@@ -88,6 +123,8 @@ export function canRemove(node: any): SafetyAssessment {
 }
 
 export function canFlatten(node: any): SafetyAssessment {
+  var guarded = componentGuard(node, true);
+  if (guarded) return guarded;
   var childCount = getChildCount(node);
 
   if (childCount === 0) return { safe: false, reason: 'no-children' };
@@ -106,6 +143,8 @@ export function canFlatten(node: any): SafetyAssessment {
 }
 
 export function isRedundantNesting(node: any): SafetyAssessment {
+  var guarded = componentGuard(node, true);
+  if (guarded) return guarded;
   var childCount = getChildCount(node);
   if (childCount !== 1) return { safe: false, reason: 'not-single-child' };
 

@@ -1,0 +1,9 @@
+{
+  "adminTools": false,
+  "extends": [
+    "figmakit:recommended"
+  ],
+  "rulesetVersion": "1.0.0",
+  "registryVersion": ">=0.1.0 <2.0.0",
+  "rules": {}
+}

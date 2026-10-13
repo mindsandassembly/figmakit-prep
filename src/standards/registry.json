@@ -1,0 +1,86 @@
+{
+  "version": "0.1.0",
+  "designSystem": "Divi 5",
+  "status": "draft",
+  "description": "ILLUSTRATIVE DRAFT - NOT AN APPROVED STANDARD. Every figmaComponentKeys entry is a placeholder (REPLACE_WITH_FIGMA_COMPONENT_KEY) and must be replaced with the real published component / component-set keys from your team library before this registry can certify readiness. The Divi module slugs (et_pb_*) are real, but this file contains NO confirmed Divi 5 nesting rules: allowedChildren / allowedParents, requiredProperties, requiresAutoLayout and namingPattern are intentionally omitted. Add them only once they are confirmed against your Divi 5 build, then set status to \"approved\".",
+  "components": [
+    {
+      "id": "divi-section",
+      "name": "Divi Section",
+      "diviType": "et_pb_section",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?section$"], "roles": ["section"] },
+      "description": "Top-level Divi section."
+    },
+    {
+      "id": "divi-row",
+      "name": "Divi Row",
+      "diviType": "et_pb_row",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?row$"], "roles": ["row"] },
+      "description": "Divi row."
+    },
+    {
+      "id": "divi-column",
+      "name": "Divi Column",
+      "diviType": "et_pb_column",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?(column|col)$"], "roles": ["column"] },
+      "description": "Divi column."
+    },
+    {
+      "id": "divi-button",
+      "name": "Divi Button",
+      "diviType": "et_pb_button",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?(button|btn)$"], "roles": ["button"] },
+      "description": "Divi Button module."
+    },
+    {
+      "id": "divi-text",
+      "name": "Divi Text",
+      "diviType": "et_pb_text",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?text$"], "roles": ["text"] },
+      "description": "Divi Text module."
+    },
+    {
+      "id": "divi-image",
+      "name": "Divi Image",
+      "diviType": "et_pb_image",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?image$"], "roles": ["image"] },
+      "description": "Divi Image module."
+    },
+    {
+      "id": "divi-blurb",
+      "name": "Divi Blurb",
+      "diviType": "et_pb_blurb",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?blurb$"], "roles": ["feature"] },
+      "description": "Divi Blurb module."
+    },
+    {
+      "id": "divi-cta",
+      "name": "Divi CTA",
+      "diviType": "et_pb_cta",
+      "figmaComponentKeys": ["REPLACE_WITH_FIGMA_COMPONENT_KEY"],
+      "match": { "namePatterns": ["^(divi[-_ ]?)?(cta|call[-_ ]?to[-_ ]?action)$"], "roles": ["cta"] },
+      "description": "Divi Call To Action module."
+    }
+  ],
+  "tokens": {
+    "spacing": [
+      { "name": "4xs", "value": 4 },
+      { "name": "3xs", "value": 8 },
+      { "name": "2xs", "value": 12 },
+      { "name": "xs", "value": 16 },
+      { "name": "sm", "value": 20 },
+      { "name": "md", "value": 24 },
+      { "name": "lg", "value": 32 },
+      { "name": "xl", "value": 48 },
+      { "name": "2xl", "value": 80 },
+      { "name": "3xl", "value": 96 }
+    ]
+  }
+}

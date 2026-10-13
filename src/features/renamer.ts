@@ -327,7 +327,7 @@ export function generateName(result: AnalysisResult, parentRole?: NodeRole, insi
   if (!isAutoNamed(name) && !isSemanticName(name)) return null;
 
   // Don't rename low-confidence defaults or decorative layers
-  if (role === 'container' || role === 'unknown' || role === 'background-shape') return null;
+  if (role === 'container' || role === 'unknown' || (role as NodeRole) === 'background-shape') return null;
 
   // If parent is a composite, use parent-prefixed naming
   if (parentRole && COMPOSITE_ROLES.has(parentRole)) {
@@ -341,7 +341,7 @@ export function generateName(result: AnalysisResult, parentRole?: NodeRole, insi
       }
     }
     // Inside a button, any container child is just a wrapper — skip renaming
-    if (parentRole === 'button' && (role === 'container' || role === 'flex-row' || role === 'flex-col' || role === 'wrapper')) {
+    if (parentRole === 'button' && ((role as NodeRole) === 'container' || role === 'flex-row' || role === 'flex-col' || role === 'wrapper')) {
       return null;
     }
   }
@@ -398,7 +398,7 @@ function collectRenamable(
     if (result.children.length > 0) {
       var childParentRole = COMPOSITE_ROLES.has(result.role) ? result.role : parentRole;
       // Track if we're inside a section — children of sections can't be sections
-      var isThisSection = result.role === 'section' || (suggested && suggested.indexOf('section') === 0);
+      var isThisSection = result.role === 'section' || !!(suggested && suggested.indexOf('section') === 0);
       var childInsideSection = insideSection || isThisSection;
       collectRenamable(result.children, actions, childParentRole, childInsideSection);
     }

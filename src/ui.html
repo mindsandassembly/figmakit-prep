@@ -27,9 +27,15 @@
   .tabs {
     display: flex;
     gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
   }
+  .tabs::-webkit-scrollbar { display: none; }
   .tab {
-    padding: 8px 12px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 8px;
     font-size: 11px;
     font-weight: 500;
     color: #666;
@@ -558,6 +564,191 @@
     display: flex;
     justify-content: space-between;
   }
+
+  /* --- Standards Panel --- */
+  .std-header {
+    padding: 10px 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: #4b5563;
+    line-height: 1.6;
+  }
+  .std-header-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    color: #1a1a2e;
+    margin-bottom: 2px;
+  }
+  .std-header strong { color: #111827; font-weight: 600; }
+  .std-notice {
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .std-notice-amber { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .std-notice-info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+  .std-notice-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+  .std-notice-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+  .std-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: #6b7280;
+  }
+  .std-summary strong { color: #111827; font-weight: 600; }
+  .std-sum-pass { color: #166534; }
+  .std-sum-error { color: #b91c1c; }
+  .std-sum-warning { color: #b45309; }
+  .std-sum-info { color: #1d4ed8; }
+  .std-status {
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .std-status-title { font-size: 12px; font-weight: 700; letter-spacing: 0.3px; }
+  .std-status-ready { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+  .std-status-exceptions { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+  .std-status-not-ready { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+  .std-status ul { margin: 4px 0 0 16px; }
+  .std-status details summary { cursor: pointer; margin-top: 2px; }
+  .std-stale {
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    background: #fef3c7;
+    color: #92400e;
+  }
+  .std-diag { font-size: 11px; line-height: 1.5; }
+  .std-diag-item { padding: 2px 0; }
+  .std-diag-group summary { cursor: pointer; padding: 2px 0; }
+  .std-diag-group .std-diag-item { padding-left: 14px; }
+  .std-diag-code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; }
+  .std-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  .std-chip {
+    padding: 3px 8px;
+    font-size: 10px;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: #fff;
+    color: #6b7280;
+    cursor: pointer;
+  }
+  .std-chip.active { background: #4f46e5; color: #fff; border-color: #4f46e5; }
+  .std-list { max-height: none; }
+  .std-group-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+  }
+  .std-group-caret { color: #9ca3af; width: 10px; flex-shrink: 0; }
+  .std-group-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .std-issue {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f3f4f6;
+    border-left: 3px solid transparent;
+    font-size: 11px;
+  }
+  .std-issue:last-child { border-bottom: none; }
+  .std-issue.sev-error { border-left-color: #ef4444; }
+  .std-issue.sev-warning { border-left-color: #f59e0b; }
+  .std-issue.sev-info { border-left-color: #3b82f6; }
+  .std-issue.excepted { border-left-color: #93c5fd; background: #f8fafc; }
+  .std-issue-body { cursor: pointer; }
+  .std-issue-body:hover .std-issue-msg { text-decoration: underline; }
+  .std-issue-top { display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap; }
+  .std-issue-msg { flex: 1; min-width: 160px; color: #111827; font-weight: 500; line-height: 1.4; }
+  .std-issue-path, .std-issue-rule {
+    font-size: 10px;
+    color: #6b7280;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .std-issue-rule { font-family: 'SF Mono', 'Fira Code', monospace; color: #9ca3af; }
+  .std-issue-detail { font-size: 10px; color: #374151; margin-top: 2px; line-height: 1.4; }
+  .std-issue-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .std-issue-actions { display: flex; gap: 4px; margin-top: 6px; }
+  .std-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .std-sev-error { background: #fee2e2; color: #991b1b; }
+  .std-sev-warning { background: #fef3c7; color: #92400e; }
+  .std-sev-info { background: #dbeafe; color: #1e40af; }
+  .std-cert { background: #f3e8ff; color: #6b21a8; }
+  .std-fix-safe { background: #dcfce7; color: #166534; }
+  .std-fix-confirm { background: #ffedd5; color: #9a3412; }
+  .std-fix-manual { background: #f3f4f6; color: #4b5563; }
+  .std-exc { background: #e0f2fe; color: #075985; text-transform: none; font-weight: 500; white-space: normal; }
+  .std-inline {
+    margin-top: 6px;
+    padding: 8px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+  }
+  .std-inline textarea, .std-textarea {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 11px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .std-textarea { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; min-height: 120px; }
+  .std-inline input[type="date"] {
+    padding: 3px 6px;
+    font-size: 11px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
+  .std-inline-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; font-size: 10px; color: #6b7280; }
+  .std-op-list { margin: 4px 0 0 16px; font-size: 11px; line-height: 1.5; }
+  .std-muted { color: #6b7280; font-size: 10px; }
+  .std-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+  .std-settings { margin-top: 16px; border-top: 1px solid #e5e5e5; padding-top: 10px; }
+  .std-settings > summary { cursor: pointer; font-weight: 600; font-size: 12px; }
+  .std-settings h4 { font-size: 11px; font-weight: 600; margin: 12px 0 6px; color: #374151; }
+  .std-rule { padding: 4px 0; border-bottom: 1px solid #f3f4f6; font-size: 11px; }
+  .std-rule:last-child { border-bottom: none; }
+  .std-rule-id { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; color: #4f46e5; }
+  .std-rule-docs { font-size: 10px; color: #6b7280; white-space: pre-wrap; margin-top: 2px; }
+  .std-rule details summary { cursor: pointer; font-size: 10px; color: #6b7280; }
+  .std-panel-bottom-space { height: 40px; }
 </style>
 </head>
 <body>
@@ -572,6 +763,7 @@
     <div class="tab" data-tab="variants">Variants</div>
     <div class="tab" data-tab="assets">Assets</div>
     <div class="tab" data-tab="tokens">Tokens</div>
+    <div class="tab" data-tab="standards">Standards</div>
   </div>
 </div>
 
@@ -772,6 +964,69 @@
     <button class="btn btn-secondary" id="token-scan">Scan</button>
     <button class="btn btn-primary" id="token-generate" disabled>Generate SCSS</button>
   </div>
+</div>
+
+<!-- Standards Panel -->
+<div class="panel" id="panel-standards">
+  <div class="std-header" id="std-header">
+    <div class="std-header-title">FIGMAKIT STANDARDS</div>
+    <div class="std-muted">Loading standards&hellip;</div>
+  </div>
+  <div id="std-registry-notice"></div>
+  <div class="std-actions">
+    <button class="btn btn-secondary" id="std-run">Run Validation</button>
+    <button class="btn btn-primary" id="std-fix-safe" disabled>Fix Safe Issues</button>
+    <button class="btn btn-secondary" id="std-export">Export Report</button>
+    <button class="btn btn-primary" id="std-mark-ready" disabled>Mark Ready for Development</button>
+  </div>
+  <div id="std-message"></div>
+  <div id="std-stale"></div>
+  <div id="std-summary"></div>
+  <div id="std-status"></div>
+  <div id="std-diagnostics"></div>
+  <div id="std-fix-preview"></div>
+  <div id="std-mark-ready-result"></div>
+  <div class="std-toolbar" id="std-toolbar">
+    <button class="std-chip active" data-std-filter="error">Errors</button>
+    <button class="std-chip active" data-std-filter="warning">Warnings</button>
+    <button class="std-chip active" data-std-filter="info">Info</button>
+    <button class="std-chip" data-std-filter="groupByRule">Group by rule</button>
+    <button class="std-chip" data-std-filter="fixableOnly">Fixable only</button>
+    <button class="std-chip" data-std-filter="needsReviewOnly">Needs review only</button>
+  </div>
+  <div class="results std-list" id="std-issues">
+    <div class="results-empty">Select frames (or nothing, to check the whole page) and click Run Validation</div>
+  </div>
+
+  <details class="std-settings" id="std-settings">
+    <summary>Settings</summary>
+    <h4>Rules</h4>
+    <div id="std-rules"><div class="std-muted">No rules loaded.</div></div>
+
+    <h4>Config JSON <span class="std-muted" id="std-config-source"></span></h4>
+    <textarea class="std-textarea" id="std-config-json" spellcheck="false"></textarea>
+    <h4>Registry JSON <span class="std-muted" id="std-registry-source"></span></h4>
+    <textarea class="std-textarea" id="std-registry-json" spellcheck="false"></textarea>
+    <div class="btn-row" style="flex-wrap:wrap">
+      <button class="btn btn-secondary btn-sm" id="std-save-config">Save</button>
+      <button class="btn btn-secondary btn-sm" id="std-reload-config">Reload</button>
+      <button class="btn btn-secondary btn-sm" data-std-reset="config">Reset config</button>
+      <button class="btn btn-secondary btn-sm" data-std-reset="registry">Reset registry</button>
+      <button class="btn btn-secondary btn-sm" data-std-reset="all">Reset all</button>
+    </div>
+    <div id="std-config-diag" style="margin-top:8px"></div>
+
+    <h4>Registry tools</h4>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn btn-secondary btn-sm" id="std-registry-helper">Generate registry entries from selection</button>
+      <button class="btn btn-secondary btn-sm" id="std-verify-registry">Verify registry keys</button>
+    </div>
+    <div id="std-helper-info" class="std-muted" style="margin-top:6px"></div>
+    <textarea class="std-textarea" id="std-helper-out" readonly spellcheck="false" style="margin-top:6px;display:none"></textarea>
+    <div id="std-verify-out" style="margin-top:6px"></div>
+    <div class="std-muted" style="margin-top:6px">Key verification imports each key from your enabled libraries; unpublished or unavailable keys fail to resolve.</div>
+  </details>
+  <div class="std-panel-bottom-space"></div>
 </div>
 
 <div class="status-bar">

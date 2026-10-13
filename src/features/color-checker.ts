@@ -22,13 +22,13 @@ function parseRgbaToRGB(rgba: string): { r: number; g: number; b: number } | nul
   return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) };
 }
 
-function parseColorToRGB(value: string): { r: number; g: number; b: number } | null {
+export function parseColorToRGB(value: string): { r: number; g: number; b: number } | null {
   if (value.charAt(0) === '#') return parseHexToRGB(value);
   if (value.indexOf('rgb') === 0) return parseRgbaToRGB(value);
   return null;
 }
 
-function colorDistance(a: { r: number; g: number; b: number }, b: { r: number; g: number; b: number }): number {
+export function colorDistance(a: { r: number; g: number; b: number }, b: { r: number; g: number; b: number }): number {
   var dr = a.r - b.r;
   var dg = a.g - b.g;
   var db = a.b - b.b;

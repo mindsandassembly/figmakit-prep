@@ -1,3 +1,10 @@
+import {
+  initStandardsUI,
+  handleStandardsUIMessage,
+  onStandardsSelectionChange,
+  onStandardsDocumentChanged,
+} from './ui-standards';
+
 // --- State ---
 let currentFeatureData: any = null;
 let currentTokenFormat: string = 'css';
@@ -986,11 +993,11 @@ function renderTokens(data: any) {
   if (spacingIssues.length > 0) {
     html += '<div class="token-section-header" style="color:#b45309">Spacing Issues <span class="token-section-count" style="background:#fef3c7;color:#92400e">' + spacingIssues.length + '</span></div>';
     for (var sii = 0; sii < spacingIssues.length; sii++) {
-      var si = spacingIssues[sii];
+      var spIssue = spacingIssues[sii];
       html += '<div class="token-item" style="border-left:3px solid #f59e0b">';
       html += '<div class="token-detail">';
-      html += '<div><strong>' + si.value + 'px</strong> used ' + si.count + 'x &rarr; suggest <strong>' + si.suggestedValue + 'px</strong> (' + escHtml(si.suggestedName) + ')</div>';
-      html += '<div class="token-usage">Off by ' + si.delta + 'px</div>';
+      html += '<div><strong>' + spIssue.value + 'px</strong> used ' + spIssue.count + 'x &rarr; suggest <strong>' + spIssue.suggestedValue + 'px</strong> (' + escHtml(spIssue.suggestedName) + ')</div>';
+      html += '<div class="token-usage">Off by ' + spIssue.delta + 'px</div>';
       html += '</div>';
       html += '</div>';
     }
@@ -1030,6 +1037,9 @@ window.onmessage = (event: MessageEvent) => {
   const msg = event.data.pluginMessage;
   if (!msg) return;
 
+  // FigmaKit Standards tab (standards-* messages)
+  if (handleStandardsUIMessage(msg)) return;
+
   if (msg.type === 'scan-result') {
     switch (msg.feature) {
       case 'cleaner': renderCleanResults(msg.data); break;
@@ -1049,6 +1059,9 @@ window.onmessage = (event: MessageEvent) => {
     qsa('.btn-primary').forEach(btn => {
       (btn as HTMLButtonElement).disabled = false;
     });
+    // Another feature changed the document: Standards results may be stale,
+    // and its buttons must keep their own enabled/disabled rules.
+    onStandardsDocumentChanged();
   } else if (msg.type === 'export-blob') {
     // Download exported asset
     try {
@@ -1077,6 +1090,7 @@ window.onmessage = (event: MessageEvent) => {
   } else if (msg.type === 'error') {
     setStatus('Error: ' + msg.message);
   } else if (msg.type === 'selection-change') {
+    onStandardsSelectionChange();
     if (msg.count === 0) {
       qs('#status-selection').textContent = 'No selection';
     } else if (msg.count === 1) {
@@ -1088,3 +1102,6 @@ window.onmessage = (event: MessageEvent) => {
     }
   }
 };
+
+// --- FigmaKit Standards tab ---
+initStandardsUI({ post: post, setStatus: setStatus });
